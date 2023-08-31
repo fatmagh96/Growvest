@@ -1,0 +1,151 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+/* navbar */
+#searchInput {
+    border: 1px solid #696565;
+    border-radius: 25px;
+    padding: 5px;
+}
+
+.underline-on-hover:hover {
+    text-decoration: underline;
+}
+
+.nav_background {
+    background-image: linear-gradient(to right, #182756, #37446c);
+    background-color: white;
+    border-bottom: 1px solid black;
+    /* color: #4179b0; */
+}
+
+/* end navbar */
+
+@keyframes growProgressBar {
+
+    0%,
+    33% {
+        --pgPercentage: 0;
+    }
+
+    100% {
+        --pgPercentage: var(--value);
+    }
+}
+
+@property --pgPercentage {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+}
+
+
+
+div[role="progressbar"] {
+    --size: 10rem;
+    --fg: #369;
+    --bg: #def;
+    --pgPercentage: var(--value);
+    animation: growProgressBar 3s 1 forwards;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(closest-side, white 80%, transparent 0 99.9%, white 0),
+        conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: calc(var(--size) / 5);
+    color: var(--fg);
+}
+
+div[role="progressbar"]::before {
+    counter-reset: percentage var(--value);
+    content: counter(percentage) '%';
+}
+
+.chart-container {
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.chart {
+    position: relative;
+    width: 420px;
+}
+
+.x-axis {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+
+}
+
+.y-axis {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+}
+
+.graph {
+    position: relative;
+    top: -20px;
+}
+
+.bar {
+    width: 50px;
+    height: 100px;
+    margin: 2px;
+    display: inline-block;
+}
+
+#bar1 {
+    background-color: #4179b0;
+}
+
+#bar2 {
+    background-color: #4179b0;
+}
+
+#bar3 {
+    background-color: #4179b0;
+}
+
+#bar4 {
+    background-color: #4179b0;
+}
+
+#bar5 {
+    background-color: #4179b0;
+}
+
+#bar6 {
+    background-color: #4179b0;
+}
+
+#bar7 {
+    background-color: #4179b0;
+}
+
+.y-axis_bar {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.y-axis_bar p {
+    margin: 0;
+    padding: 0;
+}

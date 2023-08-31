@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='po_dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <title>PO Dashboard</title>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg nav_background py-2" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+                    height="30" class="d-inline-block align-text-bottom">
+                Growvest
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+                aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/explore">Explore</a>
+                    </li>
+
+                </ul>
+                <div class="me-5 ">
+                    <form class="d-flex">
+                        <input type="text" id="searchInput" placeholder="Search..." class="bg-light text-black">
+                        <!-- <input class="form-control me-sm-2" type="search" placeholder="Search"> -->
+                        <!-- <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+                    </form>
+                </div>
+
+                {% if 'id' in session %}
+                <!-- Avatar -->
+                <div class="dropdown">
+                    <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+                        id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ url_for('static', filename='assets/avatar.png') }}" class="rounded-circle"
+                            height="30" alt="Black and White Portrait of a Man" loading="lazy" />
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <li>
+                            <a class="dropdown-item" href="/dashboard">My profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Settings</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end avatar -->
+
+                {% else %}
+                <div class="d-flex gap-4">
+                    <!-- data-bs-toggle="modal" data-bs-target="#SignInModal"  -->
+                    <a href="/signin" class="btn text-light underline-on-hover shadow-none">Log in</a>
+                    <a href="/register" class="btn text-light underline-on-hover shadow-none">Sign up</a>
+
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+    <!-- end navbar -->
+
+    <div class="container mb-4">
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex gap-4 align-items-center">
+                    <div class="d-flex gap-4">
+                        <h1><a href="/projects/{{project.id}}/show" class="text-decoration-none text-dark">{{project.title}}</a></h1>
+                    </div>
+                    <h4>
+                        <span class="badge rounded-pill text-bg-success text-white px-3 py-1">Accepted</span>
+                    </h4>
+                </div>
+                <div class="d-flex gap-4">
+                    <p name="submited_at">
+                        Submitted at : {{project.created_at}}
+                    </p>
+                    <p name="accepted_at">
+                        Accepted at : {{project.acceptance_date}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!----------------- Nav tabs ------------------------------------>
+        <div class="container mt-5">
+            <ul class="nav nav-tabs justify-content-center" role="tablist" id="myTab">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview"
+                        aria-selected="true" role="tab">Overview</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="team-tab" data-bs-toggle="tab" href="#team" aria-selected="false"
+                        role="tab">Team</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="updates-tab" data-bs-toggle="tab" href="#updates" aria-selected="false"
+                        role="tab">Updates</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="edit-tab" data-bs-toggle="tab" href="#edit" aria-selected="false"
+                        role="tab">Edit</a>
+                </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <!-- Overview ------------------------------->
+                <div class="tab-pane fade active show" id="overview" role="tabpanel">
+                    <div class=" p-5">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-6">
+                                <div class="card text-white"
+                                    style="height: 12rem;background-color: rgb(100, 199, 255);">
+                                    <div class="card-body d-flex flex-column py-5">
+                                        <h5>Goal</h5>
+                                        <h2 class="card-title">{{project.goal}} TND</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card text-white"
+                                    style="height: 12rem;background-color: rgb(166, 109, 212);">
+                                    <div class="card-body d-flex flex-column py-5">
+                                        <h5>Time Left</h5>
+                                        <h2 class="card-title">{{time_left.months}} months {{time_left.days}} days</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex mt-4">
+                            <div class="col-6">
+                                <div class="card text-white"
+                                    style="height: 12rem;background-color: rgb(110, 212, 177);">
+                                    <div class="card-body d-flex flex-column py-5">
+                                        <h5>Own Investement</h5>
+                                        <h2 class="card-title">{{project.capital}} TND</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card text-white" style="height: 12rem;background-color: rgb(51, 102, 153);">
+                                    <div class="card-body d-flex flex-column py-5">
+                                        <h5>Investement</h5>
+                                        <h2 class="card-title">{{project.amount_raised}} TND</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-4">
+                            <h2>Analytics</h2>
+                        </div>
+                        <div class="row p-2 d-flex align-items-end">
+                            <div class="col-5">
+                                <canvas id="myChartline" style="width:100%;max-width:600px"></canvas>
+                            </div>
+                            <div class="col-5 ">
+                                <canvas id="myChartBar" style="width:100%;max-width:600px"></canvas>
+                            </div>
+                            <div class="col-2 pt-1 d-flex flex-column align-items-center ">
+                                <div role="progressbar" aria-valuenow="{{percentage}}" aria-valuemin="0"
+                                    aria-valuemax="100" style="--value:{{percentage}}"></div>
+                                <h4 class="mb-3">Progress</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end Overview --------------------------->
+                <!-- Team ------------------------------->
+                <div class="tab-pane fade" id="team" role="tabpanel" aria-labelledby="team-tab">
+                    <!-- ************************** modal team *********************** -->
+
+                    <!-- ------------------------------modal button----------------------- -->
+
+                    <button type="button" class="btn btn-success m-5" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-person-plus-fill me-2" viewBox="0 0 16 16">
+                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                            <path fill-rule="evenodd"
+                                d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>Add Teammate</button>
+
+                    <!-- --------------------------------End Button------------------------- -->
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <form class=" modal-content" action="/team_member/create" method="post"
+                                enctype="multipart/form-data">
+                                <div class=" modal-body">
+                                    <h1 class="p-4">Add Teammate</h1>
+                                    <div class="mt-5 m-3">
+                                        <div class="d-flex flex-column" id="formfield ">
+                                            <div>
+                                                <div class="form-group">
+                                                    <label for="formFile" class="form-label mt-4">Upload Profile
+                                                        Image</label>
+                                                    <input class="form-control" type="file" id="formFile" name="image">
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="project_id" value="{{project.id}}">
+                                            <div class="d-flex gap-2">
+                                                <div class="mt-3">
+                                                    <label class="form-label" for="">First Name</label>
+                                                    <input type="textarea" name="first_name"
+                                                        class="text form-control mb-3 " placeholder="first_name"
+                                                        required>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <label class="form-label" for="">Last Name</label>
+                                                    <input type="textarea" name="last_name"
+                                                        class="text form-control mb-3 " placeholder="last_name"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <label class=" form-label" for="">Role</label>
+                                            <input type="textarea" name="role" class="text form-control mb-3 "
+                                                placeholder="role" required>
+                                            <label class="form-label " for="">Summary</label>
+                                            <textarea name="summary" id="" cols="300" class=" form-control mb-3  "
+                                                rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- -------------------------- Add Button---------------------- -->
+
+                                <div class="d-flex justify-content-end m-3 gap-2">
+                                    <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                                    <button class="btn btn-primary">Add</button>
+                                </div>
+
+                                <!-- ----------------------------------------------------------- -->
+
+                            </form>
+                        </div>
+                    </div>
+                    <!-- end modal -->
+                    {% for team_member in teams %}
+                    <div class="card p-2 mt-4">
+                        <div class=" d-flex  justify-content-between">
+                            <div class=" d-flex  gap-3 w-100">
+                                <div class="avatar border border-0 rounded " style="width: 20%;">
+                                    <img src="{{ url_for('static', filename=team_member.image.replace('flask_app/static/', '')) }}"
+                                        alt="" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                                </div>
+                                <div class="p-4 " style="width: 70%;">
+                                    <h4>{{team_member.first_name}} {{team_member.last_name}}</h4>
+                                    <h6 class="text-dark">{{team_member.role}}</h6>
+                                    <p>{{team_member.summary}}</p>
+                                </div>
+
+                            </div>
+
+                            <form class="d-flex jusutify-content-end" action="/team/destroy" method="post">
+                                <input type="hidden" name="id" value="{{team_member.id}}">
+                                <button class="btn btn-danger align-center " style="height: 40px;">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor%}
+                </div>
+                <!--End Team ------------------------------->
+                <!--Start Updates ----------------------------->
+                <div class="tab-pane fade" id="updates" role="tabpanel" aria-labelledby="updates-tab">
+
+                    <!-- ************************** modal updates *********************** -->
+
+                    <!-- ------------------------------modal button----------------------- -->
+
+                    <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal"
+                        data-bs-target="#example2Modal" data-bs-whatever="@mdo">Add Update</button>
+
+                    <!-- --------------------------------End Button------------------------- -->
+
+                    <div class="modal fade2" id="example2Modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h1 class="p-4">Update</h1>
+                                    <form class="mt-5 m-3" action="/updates/create" method="post"
+                                        enctype="multipart/form-data">
+                                        <div class="d-flex flex-column" id="formfield ">
+                                            <div>
+
+                                                <div class="mt-3">
+                                                    <label class="form-label" for="">Update Title</label>
+                                                    <input type="text" name="title" class="form-control mb-3 "
+                                                        placeholder="updates_title" required value=>
+                                                </div>
+                                                <div class="form-group flex-column">
+                                                    <label for="formFile" class="form-label mt-4">Upload An
+                                                        Image</label>
+                                                    <input class="form-control" type="file" id="formFile" name="image">
+                                                    <!-- #changed the id of this input from formFile to imageInput -->
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column gap-2">
+                                                <div>
+                                                    <label class="form-label mt-4" for="">Descriptions</label>
+                                                    <!-- <input type="textarea" name="summary" class="text form-control m-3"  placeholder="summary" required> -->
+                                                    <textarea name="description" id="descriptionInput" cols="300"
+                                                        class=" form-control mb-3  " rows="5"> </textarea>
+                                                </div>
+                                                <input type="hidden" value="{{project.id}}" name="project_id">
+                                            </div>
+                                        </div>
+                                        <!-- <button type="button" class="btn btn-primary" onclick="addPhotoDescription()">Add</button> -->
+                                        <div class="d-flex justify-content-end m-3 gap-2">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+
+                                            <input type="submit" value="Add" class="btn btn-primary">
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- -------------------------- Add Button---------------------- -->
+
+                                <!-- <div class="d-flex justify-content-end m-3 gap-2">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+
+                                </div> -->
+                                <!--  the new photos -->
+                                <!-- ----------------------------------------------------------- -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container col-8 ms-3">
+                        {% for update in all_updates %}
+                        <div class="card p-2 mt-4 mb-3 ms-3 card_update">
+                            <h3 class="mt-2 mb-3">{{ update.title }}</h3>
+                            <img src="{{ url_for('static', filename=update.image.replace('flask_app/static/', '')) }}"
+                                alt="{{ update.title }}" width="700rem" height="400rem">
+
+                            <div class="content mt-3">
+                                <p>
+                                    {{ update.description }}
+                                </p>
+                            </div>
+                            <form class="d-flex justify-content-end" action="/updates/destroy" method="post">
+                                <input type="hidden" name="id" value="{{update.id}}">
+                                <button class="btn btn-danger   align-center" style="height: 40px;">Delete</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!--End Updates ----------------------------->
+            <!-- Start Edit---------------------------- -->
+            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                <div class="mt-3">
+                    <h2>Edit Your Project</h2>
+                    <form action="/projects/edit" method="post" enctype='multipart/form-data'>
+                        {% for message in get_flashed_messages(category_filter=['edit_proj'])%}
+                        <p class="text-success">{{message}}</p>
+                        {%endfor%}
+                        <!-- -----------------upload video------------------- -->
+                        <div class=" col-5 mt-5 ">
+                            <label class="h4" for="">Your Video</label>
+                            <!-- <video src="{{ url_for('static', filename=project.video.replace('flask_app/static/', '')) }}"></video> -->
+                            <div class="form-group ">
+                                <label for="formFile" class="form-label">Upload video file</label>
+                                <input class="form-control mb-3" type="file" id="formFile" name="video">
+                            </div>
+                        </div>
+                        <!-- ------------------- Project registration---------------- -->
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade show active" id="edit" role="tabpanel">
+                                <label class="h4 mt-3" for="">Description</label>
+                                {% for message in get_flashed_messages(category_filter=['description'])%}
+                                <p class="text-danger">{{message}}</p>
+                                {%endfor%}
+                                <textarea name="description" id="" class=" form-control w-70 "
+                                    rows="5">{{project.description}}</textarea>
+                                <label class="h4 mt-3" for="">About Us</label>
+                                {% for message in get_flashed_messages(category_filter=['pitch'])%}
+                                <p class="text-danger">{{message}}</p>
+                                {%endfor%}
+                                <textarea name="pitch" id="" class=" form-control w-70"
+                                    rows="5">{{project.pitch}}</textarea>
+                            </div>
+                        </div>
+                        <input type="hidden" name="project_id" value="{{project.id}}">
+                        <input type="submit" value="Save Changes" class="btn btn-success mt-5">
+                    </form>
+
+                </div>
+            </div>
+            <!-- end edit -->
+        </div>
+    </div>
+    <!-----------------End Nav tabs ------------------------------------>
+
+
+
+
+
+
+
+
+
+      <!-------------------- Footer -------------------------------->
+  <!-- footer -->
+  <footer class="bg-light text-center text-lg-start ">
+    <div class="container p-5">
+      <div class="row d-flex justify-content-lg-between">
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+          <a class="text-decoration-none h5" style="color: #1b668c;" href="#">
+            <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+              height="30" class="d-inline-block align-text-bottom">
+            Growvest
+          </a>
+          <!-- <h5 class="text-uppercase" style="color: #1b668c;">Project X</h5> -->
+          <p>
+            Welcome to the Public Benefit Corporation's website. We are a company proud to be a catalyst for change.
+          </p>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase" style="color: #1b668c;">links</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="">
+              <a href="/" class="text-dark" style="font-size: smaller;">Home</a>
+            </li>
+            <li>
+              <a href="/explore" class="text-dark" style="font-size: smaller;">Explore</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Public Benefit Corporation
+    </div>  -->
+  </footer>
+  <!--------------------End Footer -------------------------------->
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+        //------------------chart bar---------------------
+        var monthsline = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var investmentValuesline = [1200, 5500, 2000, 3800, 0, 1200, 3000, 0,];
+        var barColors = ["rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)", "rgb(110, 212, 177)"];
+
+        new Chart("myChartBar", {
+            type: "bar",
+            data: {
+                labels: monthsline,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: investmentValuesline
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "Investment Values Over Months"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+    <script>
+        //-------------script chart line
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const investmentValues = [5000, 5500, 6000, 5800, 6200, 6500, 7000, 7500, 8000, 8500, 9000, 9500];
+
+        new Chart("myChartline", {
+            type: "line",
+            data: {
+                labels: months,
+                datasets: [{
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(166, 109, 212)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: investmentValues
+                }]
+            },
+            options: {
+                legend: { display: false },
+                scales: {
+                    yAxes: [{ ticks: { min: 4000, max: 10000 } }],
+                }
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous"></script>
+    <script>
+        // Add a JavaScript function to redirect to a specific tab
+        function redirectToTab(tabId) {
+            $('#myTab a[href="#' + tabId + '"]').tab('show');
+        }
+
+        // Check if there's a hash in the URL and redirect to the corresponding tab
+        $(document).ready(function () {
+            if (window.location.hash) {
+                var tabId = window.location.hash.substring(1);
+                redirectToTab(tabId);
+            }
+        });
+    </script>
+</body>
+
+</html>

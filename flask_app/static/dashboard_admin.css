@@ -1,0 +1,27 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* ----------------navbar style----------------------- */
+
+/* navbar */
+#searchInput {
+    border: 1px solid #696565;
+    border-radius: 25px;
+    padding: 5px;
+  }
+  
+  .underline-on-hover:hover {
+    text-decoration: underline;
+  }
+  
+  .nav_background {
+    background-image: linear-gradient(to right, #182756, #37446c);
+    background-color: white;
+    border-bottom: 1px solid black;
+    /* color: #4179b0; */
+  }
+  
+  /* end navbar */
+
+/* ----------------end navbar style----------------------- */

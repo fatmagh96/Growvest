@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.1/dist/cerulean/bootstrap.min.css"> -->
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <title>Growvest</title>
+</head>
+
+<body>
+
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg nav_background py-2" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+          height="30" class="d-inline-block align-text-bottom">
+        Growvest
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/explore">Explore</a>
+          </li>
+
+        </ul>
+        <div class="me-5 ">
+          <form class="d-flex">
+            <input type="text" id="searchInput" placeholder="Search..." class="bg-light text-black">
+            <!-- <input class="form-control me-sm-2" type="search" placeholder="Search"> -->
+            <!-- <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+          </form>
+        </div>
+
+        {% if 'id' in session %}
+        <!-- Avatar -->
+        <div class="dropdown">
+          <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
+            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ url_for('static', filename='assets/avatar.png') }}" class="rounded-circle" height="30"
+              alt="Black and White Portrait of a Man" loading="lazy" />
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+            <li>
+              <a class="dropdown-item" href="/dashboard">My profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+        <!-- end avatar -->
+
+        {% else %}
+        <div class="d-flex gap-4">
+          <!-- data-bs-toggle="modal" data-bs-target="#SignInModal"  -->
+          <a href="/signin" class="btn text-light underline-on-hover shadow-none">Log in</a>
+          <a href="/register" class="btn text-light underline-on-hover shadow-none">Sign up</a>
+
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </nav>
+  <!-- end navbar -->
+
+
+
+  <main>
+    <!-- <div style="background-color: #f0f8ff"> -->
+    <div class="main-banner" id="top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-6 align-self-center">
+                <div class="owl-carousel owl-banner">
+                  <div class="item header-text">
+                    <h6>Welcome to Growvest</h6>
+                    <h2>Invest <em>in the founders</em> who are building <span>the future</span></h2>
+                    <p>Get shares and preferred seats of the startups and small businesses you love from just 100$</p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="type pt-2">
+      <div class="relative px-2 xs:px-6 py-16 lg:py-20 space-y-8 lg:space-y-12 xl:space-y-16">
+        <div class="container-max-lg mx-auto space-y-2 text-center">
+          <h2 class=" text-2xl md:text-3xl lg:text-5xl lg:leading-tight lg:font-light">
+            New investor ?
+          </h2>
+          <p class="text-black text-base md:text-lg lg:text-xl lg:leading-7 lg:font-light">
+            Here's how it works on Growvest.
+          </p>
+        </div>
+
+        <div class="row g-md-3 g-12 " style="margin-top: 5rem; margin-left: 30rem; margin-right: 20rem;">
+          <div class="col-md-6 ">
+            <div class="space-y-1 md:space-y-2 d-flex flex-column justify-content-center">
+              <p class="text-xs md:text-sm text-gray-700 font-bold tracking-wider">
+                Step 1:
+              </p>
+              <p class="text-lg md:text-xl lg:text-2xl font-light text-dark">
+                Browse the “Community Rounds”
+              </p>
+              <p class="text-sm md:text-base lg:text-lg font-light text-dark">
+                We have the largest selection of startups <br> and small businesses raising funds right now.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <img src="{{ url_for('static', filename='assets/img1.png') }}" alt="browser" class="img">
+          </div>
+        </div>
+      </div>
+      <div class="row g-md-3 g-12 " style="margin-top: 5rem; margin-left: 30rem; margin-right: 20rem;">
+        <div class="col-md-6 ">
+          <div class="space-y-1 md:space-y-2 d-flex flex-column justify-content-center">
+            <p class="text-xs md:text-sm text-gray-700 font-bold tracking-wider">
+              2nd step :
+            </p>
+            <p class="text-lg md:text-xl lg:text-2xl font-light text-dark">
+              Do your own research
+            </p>
+            <p class="text-sm md:text-base lg:text-lg font-light text-dark">
+              Examine the company's financials , <br>
+              presentation and what people are saying. <br>
+              Or don't - if you're here to support a friend or <br>
+              founder you believe in, that's just as well!
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 bor">
+          <img src="{{ url_for('static', filename='assets/research.jpg') }}" alt="research" class="img">
+
+        </div>
+      </div>
+      <div class="row g-md-3 g-12 " style="margin-top: 5rem; margin-left: 30rem; margin-right: 20rem;">
+        <div class="col-md-6 ">
+          <div class="space-y-1 md:space-y-2 d-flex flex-column justify-content-center">
+            <p class="text-xs md:text-sm text-gray-700 font-bold tracking-wider">
+              Step 3:
+            </p>
+            <p class="text-lg md:text-xl lg:text-2xl font-light text-dark">
+              Invest in what you understand
+            </p>
+            <p class="text-sm md:text-base lg:text-lg font-light text-dark">
+              Harness your unique perspective and knowledge <br>
+              to invest in companies you believe in.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <img src="{{ url_for('static', filename='assets/invest.jpg') }}" alt="" class="img">
+
+        </div>
+      </div>
+    </div>
+
+    <!-- <div style="background-color: #f0f8ff"> -->
+    <div class="container1 ">
+      <div class="slider">
+        <input class="slider-target" type="radio" id="slide-0" name="slider" />
+        <input class="slider-target" type="radio" id="slide-1" name="slider" />
+        <input class="slider-target" type="radio" id="slide-2" name="slider" />
+        <input class="slider-target" type="radio" id="slide-3" name="slider" checked="checked" />
+        <input class="slider-target" type="radio" id="slide-4" name="slider" />
+        <input class="slider-target" type="radio" id="slide-5" name="slider" />
+        <input class="slider-target" type="radio" id="slide-6" name="slider" />
+        <div class="slider__viewport">
+          <div class="slider__viewbox">
+            <div class="slider__container">
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-0" title="Show product 0"></label>
+                  <a class="card" href="https://immersed.com/" target="_blank"
+                    style="--card-image:url('https://www.roadtovr.com/wp-content/uploads/2023/08/immersed-visor-hero.jpg')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">2019</span><span class="card-meta-item">2h 2m</span></p> -->
+                        <h2 class="card-title">IMMERSED</h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">Technology</li>
+                          <li class="card-tag-list-item">AR & VR</li>
+                          <li class="card-tag-list-item">B2B</li>
+                        </ul>
+                        <p class="card-description">AR/VR company to go Public! (🤖AI + 🥽Visor)</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-1" title="Show product 1"></label><a class="card"
+                    href="https://www.spinn.com/" target="_blank"
+                    style="--card-image:url('https://www.spinn.com/_next/image?url=https%3A%2F%2Fcdn.spinn.com%2Fassets%2Fimg%2Fhome-page%2Ffallbacks%2Fbrewversatility-v2.png&w=256&q=100')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">2022</span><span class="card-meta-item">1h 40m</span></p> -->
+                        <h2 class="card-title">Spinn</h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">Durability</li>
+                          <li class="card-tag-list-item">Venture backed</li>
+                          <li class="card-tag-list-item">B2C</li>
+                        </ul>
+                        <p class="card-description">Building the future of coffee
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-2" title="Show product 2"></label><a class="card"
+                    href="https://www.volup.app/" target="_blank"
+                    style="--card-image:url('https://media.timeout.com/images/105732490/image.jpg')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">2014</span><span class="card-meta-item">2h 49m</span></p> -->
+                        <h2 class="card-title">VOLUP</h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">
+                            <main>Mobile apps</main>
+                          </li>
+                          <li class="card-tag-list-item">Food & Beverage</li>
+                          <li class="card-tag-list-item">B2C</li>
+                        </ul>
+                        <p class="card-description">Bringing the high-end food industry to you</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-3" title="Show product 3"></label><a class="card"
+                    href="https://zennihome.com/" target="_blank"
+                    style="--card-image:url('https://i.pinimg.com/564x/0a/1a/0f/0a1a0f7f1ebf739f6c3b39ec58b12427.jpg')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">2021</span><span class="card-meta-item">2h 28m</span></p> -->
+                        <h2 class="card-title">ZENNIHOME</h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">Robotics</li>
+                          <li class="card-tag-list-item">Technology</li>
+                          <li class="card-tag-list-item">B2B</li>
+                        </ul>
+                        <p class="card-description">Transforming the $2T US housing market with robotic smart homes.</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-4" title="Show product 4"></label><a class="card"
+                    href="https://www.st37.fr/" target="_blank"
+                    style="--card-image:url('https://static.zawya.com/view/acePublic/alias/contentid/image.180516221655ZMHF/5/180516221655zmhf-jpg.webp?f=3%3A2&q=0.75&w=3840')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">2022</span><span class="card-meta-item">2h 56m</span></p> -->
+                        <h2 class="card-title">Smart-Vid</h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">Data</li>
+                          <li class="card-tag-list-item">Video</li>
+                          <li class="card-tag-list-item">B2C</li>
+                        </ul>
+                        <p class="card-description"> Helping people take better decisions with smart video analysis</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-5" title="Show product 5"></label><a class="card"
+                    href="https://www.curtissmotorcycles.com/" target="_blank"
+                    style="--card-image:url('https://uploads.wefunder.com/uploads/company/custom_card_photo/30284/company_card_cropped_Screen_Shot_2021-05-17_at_7.27.05_PM.jpg')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">2022</span><span class="card-meta-item">2h 10m</span></p> -->
+                        <h2 class="card-title">CURTISS MOTORCYCLE CO.</h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">Technology</li>
+                          <li class="card-tag-list-item"> B2C</li>
+                        </ul>
+                        <p class="card-description">Iconic Electric Motorcycles
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="slider-item">
+                <div class="slider-item__inner">
+                  <label class="slider-item__trigger" for="slide-6" title="Show product 6"></label><a class="card"
+                    href="https://www.beomni.ai/" target="_blank"
+                    style="--card-image:url('https://uploads.wefunder.com/uploads/company/custom_card_photo/110220/company_card_cropped_beonmi.jpg')">
+                    <div class="card__container">
+                      <div class="card__image"></div>
+                      <div class="card__content">
+                        <!-- <p class="card-meta"><span class="card-meta-item">1999</span><span class="card-meta-item">2h 19m</span></p> -->
+                        <h2 class="card-title">BEYOND IMAGINATION
+                        </h2>
+                        <ul class="card-tag-list">
+                          <li class="card-tag-list-item">Technology</li>
+                        </ul>
+                        <p class="card-description">Beyond ChatGPT - AI Brain for Work
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="pt-2">
+
+    <div class="bg-gradient mt-5 mb-5">
+      <div class="px-2 xs:px-6 pt-16 lg:pt-20 bg-white/80">
+        <div class="container max-w-4xl mx-auto space-y-2 text-center ">
+          <h2 class="text-[#292524] text-2xl md:text-3xl lg:text-5xl lg:leading-tight lg:font-light">
+            Ready to invest in the future ?
+          </h2>
+          <p class="text-black text-base md:text-lg lg:text-xl lg:leading-7 lg:font-light">
+            Invest in the Founders, Products, and Missions you love.
+          </p>
+        </div>
+        <div class="d-flex justify-content-center mt-6">
+          <div class="d-flex flex-column gap-3 max-w-lg mx-auto">
+            <button class="btn btn-outline-secondary btn-sm text-sm rounded-lg hover-opacity-90">
+              <span aria-hidden="true"
+                class="fa fa-envelope-o text-gray-500 h-[18px] text-[18px] absolute left-4 top-1/2 -translate-y-1/2"><a
+                  href="/signin" class="text-decoration-none text-dark">Connect with E-mail</a></span>
+
+            </button>
+            <!-- <div class="d-none w-full max-w-lg mx-auto">
+              <form class="d-flex flex-column gap-3">
+                <label for="email" class="visually-hidden">E-mail</label>
+                <div class="makena wf-input-container">
+                  <input type="email" id="email" autocomplete="email" aria-required="true" aria-invalid="false"
+                    title="E-mail" class="wf-labelled-input animate-fadein" name="email" placeholder=" "
+                    aria-labelledby="email" value="">
+                  <label for="email" class="wf-input-label">E-mail</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Continue</button>
+              </form>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+  </main>
+
+
+  <!-------------------- Footer -------------------------------->
+  <!-- footer -->
+  <footer class="bg-light text-center text-lg-start ">
+    <div class="container p-5">
+      <div class="row d-flex justify-content-lg-between">
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+          <a class="text-decoration-none h5" style="color: #1b668c;" href="#">
+            <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+              height="30" class="d-inline-block align-text-bottom">
+            Growvest
+          </a>
+          <!-- <h5 class="text-uppercase" style="color: #1b668c;">Project X</h5> -->
+          <p>
+            Welcome to the Public Benefit Corporation's website. We are a company proud to be a catalyst for change.
+          </p>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase" style="color: #1b668c;">links</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="">
+              <a href="/" class="text-dark" style="font-size: smaller;">Home</a>
+            </li>
+            <li>
+              <a href="/explore" class="text-dark" style="font-size: smaller;">Explore</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Public Benefit Corporation
+    </div>  -->
+  </footer>
+  <!--------------------End Footer -------------------------------->
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+
+      // Check if the "open_modal" query parameter is present in the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('open_modal')) {
+        myModal.show();
+      }
+    });
+  </script>
+
+</body>
+
+</html>

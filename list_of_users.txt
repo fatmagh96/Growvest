@@ -1,0 +1,128 @@
+Bank account info :
+
+4513 2568 5876 0869
+Lisa Mayer
+09/2026
+
+
+
+
+User 0 admin:
+
+Admin
+Admin
+admin@admin.com
+mdp: 123456789
+
+User 1 po innovsmart:
+
+First Name: Emily
+Last Name: Johnson
+Email: emily.johnson@example.com
+
+User 2 po UrbanEats:
+
+First Name: Michael
+Last Name: Smith
+Email: michael.smith@example.com
+
+User 3 po TechAid:
+
+First Name: Jessica
+Last Name: Williams
+Email: jessica.williams@example.com
+
+User 4 po HealHub:
+
+First Name: Andrew
+Last Name: Davis
+Email: andrew.davis@example.com
+
+User 5 po GreenTech:
+
+First Name: Sarah
+Last Name: Brown
+Email: sarah.brown@example.com
+
+User 6 po GreenRides:
+
+First Name: David
+Last Name: Martinez
+Email: david.martinez@example.com
+
+User 7 investor:
+
+First Name: Jennifer
+Last Name: Anderson
+Email: jennifer.anderson@example.com
+
+User 8 investor:
+
+First Name: Christopher
+Last Name: Taylor
+Email: christopher.taylor@example.com
+
+User 9 investor:
+
+First Name: Maria
+Last Name: Garcia
+Email: maria.garcia@example.com
+
+User 10 po CleanOceans:
+
+First Name: Daniel
+Last Name: Rodriguez
+Email: daniel.rodriguez@example.com
+
+User 11:
+
+First Name: Alex
+Last Name: Thompson
+Email: alex.thompson@example.com
+
+
+User 12:
+
+First Name: Maya
+Last Name: Patel
+Email: maya.patel@example.com
+
+User 14:
+
+First Name: Olivia
+Last Name: Ramirez
+Email: olivia.ramirez@example.com
+
+
+User 16:
+
+First Name: Emily
+Last Name: Anderson
+Email: emily.anderson@example.com
+
+
+Bank account info :
+
+4513 2568 5876 0869
+Lisa Mayer
+09/2026
+
+
+
+
+
+
+User 17:
+
+First Name: Daniel
+Last Name: Martinez
+Email: daniel.martinez@example.com
+
+
+
+Bank account info :
+
+4513 2568 5876 0869
+Lisa Mayer
+09/2026
+

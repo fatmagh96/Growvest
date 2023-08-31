@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='investor_dashboard.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <title>Investor Dashboard</title>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg nav_background py-2" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+          height="30" class="d-inline-block align-text-bottom">
+        Growvest
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/explore">Explore</a>
+          </li>
+
+        </ul>
+        <div class="me-5 ">
+          <form class="d-flex">
+            <input type="text" id="searchInput" placeholder="Search..." class="bg-light text-black">
+            <!-- <input class="form-control me-sm-2" type="search" placeholder="Search"> -->
+            <!-- <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+          </form>
+        </div>
+
+        {% if 'id' in session %}
+        <!-- Avatar -->
+        <div class="dropdown">
+          <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
+            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ url_for('static', filename='assets/avatar.png') }}" class="rounded-circle" height="30"
+              alt="Black and White Portrait of a Man" loading="lazy" />
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+            <li>
+              <a class="dropdown-item" href="/dashboard">My profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+        <!-- end avatar -->
+
+        {% else %}
+        <div class="d-flex gap-4">
+          <!-- data-bs-toggle="modal" data-bs-target="#SignInModal"  -->
+          <a href="/signin" class="btn text-light underline-on-hover shadow-none">Log in</a>
+          <a href="/register" class="btn text-light underline-on-hover shadow-none">Sign up</a>
+
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </nav>
+  <!-- end navbar -->
+
+  <!-- #80c886 -->
+
+  <div class="container mt-5">
+    <!-- <h1 class="text-dark d-inline-block ms-3" style="vertical-align: middle;">My Wallet</h1> -->
+    <div>
+      <h1 class="text-dark d-inline-block" style="vertical-align: middle;"><i class="bi bi-wallet"></i> My Wallet </h1>
+    </div>
+    <div class="row">
+      <div class="col-8 card box ms-3">
+        <div class="mt-3 ms-3">
+          <h5>Balance</h5>
+          <!-- <img src="/assets/vector-wallet-line-black-icon-removebg-preview.png" alt="" width="40" height="40" style="vertical-align: middle;" class="mb-2"> -->
+          <h1 class=" mt-2" style="color: black; letter-spacing: 2px; font-size: 400;">
+            <span>
+              {%if user.wallet == None%}
+              0
+              {%else%}
+              {{user.wallet}}
+              {%endif%}
+            </span> TND
+          </h1>
+        </div>
+        <div class=" p-2">
+          <div class="d-flex justify-content-end">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              class="btn btn-block gradient-custom-4 ml-auto" style="background-color:#95f19b ; color: #121212;">Add
+              Money to Wallet</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- WALLET Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Transfer Amount</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/add_money/{{user.id}}" method="post">
+            <div class="form-outline mb-3">
+              <label class="form-label" for="">Amount (in TND):</label>
+              <input type="number" id="float-number" name="added_money" class="form-control" step="0.1" required>
+            </div>
+            <div class="form-outline mb-3">
+              <label class="form-label" for="">Credit Card number</label>
+              <input type="text" name="credit_card_num" id="" class="form-control">
+            </div>
+            <div class="form-outline mb-3">
+              <label class="form-label" for="">Cardholder's Name</label>
+              <input type="text" name="credit_card_name" id="" class="form-control">
+            </div>
+            <div class="d-flex gap-3 align-items-center pb-2">
+              <div class="form-outline">
+                <label class="form-label" for="typeExp">Expiration</label>
+                <input type="text" id="typeExp" class="form-control form-control-lg" placeholder="MM/YYYY" size="7"
+                  minlength="7" maxlength="7" />
+              </div>
+              <div class="form-outline">
+                <label class="form-label" for="typeText2">Cvv</label>
+                <input type="password" id="typeText2" class="form-control form-control-lg"
+                  placeholder="&#9679;&#9679;&#9679;" size="3" minlength="3" maxlength="3" />
+              </div>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <!-- <button type="button" class="btn btn-primary">Add Money</button> -->
+              <input type="submit" value="Add Money" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+
+  <!-- tabs -->
+  <div class="container mt-5">
+    <ul class="nav nav-tabs justify-content-center" role="tablist" id="myTab">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="home-tab" href="#home" data-bs-toggle="tab" aria-selected="true" role="tab"
+          aria-controls="home">My
+          Investments</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="favourites-tab" data-bs-toggle="tab" href="#favourites" aria-selected="false" role="tab"
+          aria-controls="favourites">Favourites</a>
+      </li>
+      <!-- <li class="nav-item" role="presentation">
+        <a class="nav-link" id="transactions-tab" data-bs-toggle="tab" href="#transactions" aria-selected="false"
+          role="tab" aria-controls="transactions">Transaction History</a>
+      </li> -->
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="profile-tab" href="#profile" data-bs-toggle="tab" aria-selected="false" role="tab"
+          aria-controls="profile">My Profile</a>
+      </li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+      <!-- Investments -->
+      <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <h3 class="my-4">Investment History</h3>
+        <table class="table">
+          <thead>
+            <th class="fw-bold">Project</th>
+            <th class="fw-bold">Amount</th>
+            <th class="fw-bold">Progress</th>
+            <th class="fw-bold">Deadline</th>
+            <th class="fw-bold">Status</th>
+          </thead>
+          <tbody>
+            {% for investment in investments %}
+            <tr class="">
+              <td><a href="/projects/{{investment.project.id}}/show" class="underline-on-hover1 text-dark"
+                  style="vertical-align: middle;">{{investment.project.title}}</a></td>
+              <td class="fw-bolder mt-4">{{investment.amount}} TND</td>
+              <td>
+                <span class="d-flex justify-content-between">
+                  <span class="text-success">{{investment.project.percentage}}%</span>
+                  <span>{{investment.project.total}} TND/{{investment.project.goal}} TND</span>
+                </span>
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar"
+                    style="width: {{investment.project.percentage}}%;" aria-valuenow="{{investment.project.percentage}}"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </td>
+              <td>
+                {{investment.project.deadline}}
+              </td>
+              <td><span class="badge rounded-pill bg-success">{{investment.project.status}}</span></td>
+            </tr>
+            {%endfor%}
+
+
+          </tbody>
+
+        </table>
+      </div>
+      <!-- Favorites -->
+      <div class="tab-pane fade" id="favourites" role="tabpanel" aria-labelledby="favourites-tab">
+        <table class="table mt-3">
+          <thead style="border-bottom: 1px solid #121212 ;">
+            <th class="fw-bold">Project</th>
+            <th class="fw-bold">Progress</th>
+            <th class="fw-bold">Deadline</th>
+            <th class="fw-bold"> </th>
+
+          </thead>
+          <tbody>
+            {% for favourite in favourited_investments%}
+            <tr>
+              <td><a href="/projects/{{favourite.id}}/show" class="underline-on-hover1 text-dark"
+                  style="vertical-align: middle;">{{favourite.title}}</a></td>
+
+              <td>
+                <span class="d-flex justify-content-between">
+                  <span class="text-success">{{favourite.percentage}}%</span>
+                  <span>{{favourite.total}} TND/{{favourite.goal}} TND</span>
+                </span>
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: {{favourite.percentage}}%;"
+                    aria-valuenow="{{favourite.percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </td>
+              <td>
+                {{favourite.deadline}}
+              </td>
+              <td>
+                <form action="/remove_from_favourites" method="post">
+                  <input type="hidden" name="project_id" value="{{favourite.id}}">
+                  <input type="hidden" name="user_id" value="{{user.id}}">
+                  <input type="submit" class="btn btn-danger" value="Remove">
+                </form>
+                <!-- <span class="btn btn-danger">Remove</span> -->
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+
+        </table>
+      </div>
+      <!-- end favourites -->
+      <!-- my profile -->
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+        <div class="edit-form mt-2">
+          <div class="row">
+            <div class="col-5 ms-5">
+              <h2 class="my-3">Edit Profile Information</h2>
+              <form action="/investors/{{user.id}}/update" method="post">
+                {% for message in get_flashed_messages(category_filter=['edit'])%}
+                <p class="text-success">{{message}}</p>
+                {%endfor%}
+                <label for="first_name">First Name:</label>
+                {% for message in get_flashed_messages(category_filter=['first_name'])%}
+                <p class="text-danger">{{message}}</p>
+                {%endfor%}
+                <input type="text" id="first_name" name="first_name" value="{{user.first_name}}"
+                  class="form-control mb-3">
+                <label for="last_name">Last Name:</label>
+                {% for message in get_flashed_messages(category_filter=['last_name'])%}
+                <p class="text-danger">{{message}}</p>
+                {%endfor%}
+                <input type="text" id="last_name" name="last_name" value="{{user.last_name}}" class="form-control mb-3">
+                <!-- <label for="image">Choose an Avatar (JPG or PNG):</label>
+                  <input type="file" id="image" name="image" value="{{user.image}}" accept=".jpg, .jpeg, .png" class="form-control mb-3"> -->
+                <div class="d-flex justify-content-end my-4">
+                  <input type="submit" value="Save Changes" class="btn btn-success">
+                </div>
+              </form>
+              <h5 class="my-3">Change password:</h5>
+              <div class="card p-4 mb-5">
+                <form action="/change_password" , method="post">
+                  {%for message in get_flashed_messages(category_filter=['change_password_success'])%}
+                  <p class="text-success">{{message}}</p>
+                  {%endfor%}
+                  {%for message in get_flashed_messages(category_filter=['change_password'])%}
+                  <p class="text-danger">{{message}}</p>
+                  {%endfor%}
+                  <label for="current-password">Current Password:</label>
+                  <input type="password" id="current-password" name="current_password" class="form-control mb-3">
+
+                  <label for="new-password">New Password:</label>
+                  <input type="password" id="new-password" name="new_password" class="form-control mb-3">
+
+                  <label for="confirm-new-password">Confirm New Password:</label>
+                  <input type="password" id="confirm-new-password" name="confirm_new_password"
+                    class="form-control mb-3">
+
+                  <!-- <button type="submit">Change Password</button> -->
+                  <input type="hidden" name="id" value="{{user.id}}">
+                  <input type="submit" value="Change password" class="btn btn-danger mt-1">
+                </form>
+
+              </div>
+
+              <!-- <button class="btn btn-success">Save</button> -->
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <!-- end profile -->
+      <!-- transaction History -->
+      <!-- <div class="tab-pane fade" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+        <table class="table mt-3">
+          <thead style="border-bottom: 1px solid #121212 ;">
+            <th class="fw-bold">Transaction</th>
+            <th class="fw-bold">Date</th>
+            <th class="fw-bold">Amount</th>
+            
+          </thead>
+          <tbody>
+            <tr>
+              <td>Money added to wallet</td>
+
+              <td>
+                13/12/2018 01:58
+              </td>
+              <td>
+                <span class="text-success">+ 200 TND</span>
+              </td>
+
+            </tr>
+            <tr>
+              
+              <td>Invested in <a href="#" class="underline-on-hover1 text-dark">Magnum</a></td>
+
+              <td>
+                13/12/2018 01:58
+              </td>
+              <td>
+                <span class="text-danger">- 50 TND</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Invested in <a href="#" class="underline-on-hover1 text-dark">Monoprix</a></td>
+
+              <td>
+                09/07/2018 08:05
+              </td>
+              <td>
+                <span class="text-danger">- 1000 TND</span>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div> -->
+      <!-- end transactions -->
+    </div>
+
+  </div>
+  </div>
+
+
+  <!-------------------- Footer -------------------------------->
+  <!-- footer -->
+  <footer class="bg-light text-center text-lg-start ">
+    <div class="container p-5">
+      <div class="row d-flex justify-content-lg-between">
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+          <a class="text-decoration-none h5" style="color: #1b668c;" href="#">
+            <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+              height="30" class="d-inline-block align-text-bottom">
+            Growvest
+          </a>
+          <!-- <h5 class="text-uppercase" style="color: #1b668c;">Project X</h5> -->
+          <p>
+            Welcome to the Public Benefit Corporation's website. We are a company proud to be a catalyst for change.
+          </p>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase" style="color: #1b668c;">links</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="">
+              <a href="/" class="text-dark" style="font-size: smaller;">Home</a>
+            </li>
+            <li>
+              <a href="/explore" class="text-dark" style="font-size: smaller;">Explore</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Public Benefit Corporation
+    </div>  -->
+  </footer>
+  <!--------------------End Footer -------------------------------->
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"></script>
+  <script>
+    // Add a JavaScript function to redirect to a specific tab
+    function redirectToTab(tabId) {
+      $('#myTab a[href="#' + tabId + '"]').tab('show');
+    }
+
+    // Check if there's a hash in the URL and redirect to the corresponding tab
+    $(document).ready(function () {
+      if (window.location.hash) {
+        var tabId = window.location.hash.substring(1);
+        redirectToTab(tabId);
+      }
+    });
+  </script>
+
+
+
+</body>
+
+</html>

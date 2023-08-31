@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard_admin.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+
+    <!----------------------- Nav Bar ---------------------------->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg nav_background py-2" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+                    height="30" class="d-inline-block align-text-bottom">
+                Growvest
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+                aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/explore">Explore</a>
+                    </li>
+
+                </ul>
+                <div class="me-5 ">
+                    <form class="d-flex">
+                        <input type="text" id="searchInput" placeholder="Search..." class="bg-light text-black">
+                        <!-- <input class="form-control me-sm-2" type="search" placeholder="Search"> -->
+                        <!-- <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+                    </form>
+                </div>
+
+                {% if 'id' in session %}
+                <!-- Avatar -->
+                <div class="dropdown">
+                    <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+                        id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ url_for('static', filename='assets/avatar.png') }}" class="rounded-circle"
+                            height="30" alt="Black and White Portrait of a Man" loading="lazy" />
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <li>
+                            <a class="dropdown-item" href="/dashboard">My profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Settings</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end avatar -->
+
+                {% else %}
+                <div class="d-flex gap-4">
+                    <!-- data-bs-toggle="modal" data-bs-target="#SignInModal"  -->
+                    <a href="/signin" class="btn text-light underline-on-hover shadow-none">Log in</a>
+                    <a href="/register" class="btn text-light underline-on-hover shadow-none">Sign up</a>
+
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+    <!-- end navbar -->
+    <!-----------------------End Nav Bar ---------------------------->
+
+
+
+    <div class="d-flex align-items-start ">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"
+            style="width: 20rem;height: 50rem; background-color: rgb(248, 249, 250);">
+            <button class="active btn underline-on-hover border-0 text-start py-3 ps-4" id="v-pills-home-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab"
+                aria-controls="v-pills-home" aria-selected="true"><i class="bi bi-house-door-fill"></i> Home</button>
+            <button class="border-0 text-start fw-bold py-3 ps-2">Projects</button>
+
+            <button class="btn underline-on-hover border-0 text-start py-3 ps-4" id="v-pills-pending-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-pending" type="button" role="tab"
+                aria-controls="v-pills-pending" aria-selected="false"><i class="bi bi-stopwatch-fill"></i>
+                Pending</button>
+            <button class="btn underline-on-hover border-0 text-start py-3 ps-4" id="v-pills-confirmed-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-confirmed" type="button" role="tab"
+                aria-controls="v-pills-confirmed" aria-selected="false"><i class="bi bi-check-circle-fill"></i>
+                Confirmed</button>
+            <button class="btn underline-on-hover border-0 text-start py-3 ps-4" id="v-pills-declined-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-declined" type="button" role="tab"
+                aria-controls="v-pills-declined" aria-selected="false"><i class="bi bi-x-circle-fill"></i>
+                Declined</button>
+            <button class="border-0 text-start fw-bold py-3 ps-2">Users</button>
+            <button class="btn underline-on-hover border-0 text-start py-3 ps-4" id="v-pills-investors-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-investors" type="button" role="tab"
+                aria-controls="v-pills-investors" aria-selected="false"><i class="bi bi-cash-coin"></i>
+                Investors</button>
+            <button class="btn underline-on-hover border-0 text-start py-3 ps-4" id="v-pills-project-owners-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-project-owners" type="button" role="tab"
+                aria-controls="v-pills-project-owners" aria-selected="false"><i class="bi bi-person-circle"></i> Project
+                owners</button>
+        </div>
+        <div class="tab-content w-100" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"
+                tabindex="0">
+                <!----------------------- DASHBOARD -------------------------->
+                <div class="col-5 m-4">
+                    <h1 class="text-dark">Welcome {{admin.first_name}}</h1>
+                    <h4 class="text-dark">Dashboard</h4>
+                </div>
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-6 d-flex flex-column-reverse">
+                            <div class="card text-white mt-3"
+                                style="height: 6rem;background-color: rgb(100, 199, 255);">
+                                <div class="card-body">
+                                    <h5><i class="bi bi-cash-coin"></i> Investors</h5>
+                                    <h2 class="card-title">{{investor_count}}</h2>
+                                </div>
+                            </div>
+                            <div class="card text-white mt-3"
+                                style="height: 6rem;background-color: rgb(166, 109, 212);">
+                                <div class="card-body">
+                                    <h5><i class="bi bi-person-circle"></i> Project owners</h5>
+                                    <h2 class="card-title">{{pos_count}}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                        </div>
+                    </div>
+                    <div class="row mt-5 d-flex justify-content-between">
+                        <div class="col-5">
+                            <h4>Top Projects</h4>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Ranking</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Project Name</th>
+                                        <th scope="col">Investments Progress</th>
+                                        <th scope="col">Number of Investors</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <th scope="row">1</th>
+                                        <td>Project A</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    aria-label="Warning example" style="width: 75%" aria-valuenow="75"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <th scope="row">1</th>
+                                        <td>Project B</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    aria-label="Warning example" style="width: 75%" aria-valuenow="75"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <th scope="row">1</th>
+                                        <td>Project C</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    aria-label="Warning example" style="width: 75%" aria-valuenow="75"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <th scope="row">1</th>
+                                        <td>Project C</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    aria-label="Warning example" style="width: 75%" aria-valuenow="75"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <th scope="row">1</th>
+                                        <td>Project C</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    aria-label="Warning example" style="width: 75%" aria-valuenow="75"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <th scope="row">1</th>
+                                        <td>Project C</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    aria-label="Warning example" style="width: 75%" aria-valuenow="75"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td>100</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-5">
+                            <h4>Top Investors</h4>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Ranking</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Investor Name</th>
+                                        <th scope="col">Number of Projects</th>
+                                        <th scope="col">Invested Fund</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <th scope="row">1</th>
+                                        <td>Investor A</td>
+                                        <td>5</td>
+                                        <td>TND 500,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <th scope="row">2</th>
+                                        <td>Investor B</td>
+                                        <td>3</td>
+                                        <td>TND 300,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <th scope="row">3</th>
+                                        <td>Investor C</td>
+                                        <td>7</td>
+                                        <td>TND 750,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <th scope="row">3</th>
+                                        <td>Investor C</td>
+                                        <td>7</td>
+                                        <td>TND 750,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <th scope="row">3</th>
+                                        <td>Investor C</td>
+                                        <td>7</td>
+                                        <td>TND 750,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <th scope="row">3</th>
+                                        <td>Investor C</td>
+                                        <td>7</td>
+                                        <td>TND 750,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!----------------------- END DASHBOARD -------------------------->
+            </div>
+            <div class="tab-pane fade" id="v-pills-pending" role="tabpanel" aria-labelledby="v-pills-pending-tab"
+                tabindex="0">
+                <!----------------- PENDING ------------------->
+                <h2 class="text-dark  mt-5 ms-4">Pending Projects Table</h2>
+                <div class="mt-5 ms-5">
+                    <div class="col-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Project Name</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in all_pending_projects %}
+                                <tr>
+                                    <td>{{ project.id }}</td>
+                                    <td>{{ project.title }}</td>
+                                    <td>{{ project.status }}</td>
+                                    <td class="d-flex justify-content-center gap-3">
+                                        <!-- <button class="btn btn-primary"><a href="/download/{{project.business_plan}}" class="text-light">View Documents</a></button> -->
+                                        <a href="/download{{ url_for('static', filename=project.business_plan.replace('flask_app/static/', '')) }}"
+                                            class="btn btn-primary">View Documents</a>
+
+                                        <!-- "/download{{ url_for('static', filename=project.business_plan.replace('flask_app/static/img/', '')) }}" -->
+                                        <form action="/accept_project/{{ project.id }}" method="POST">
+                                            <button class="btn btn-success" type="submit">Accept</button>
+                                        </form>
+                                        <form action="/decline_project/{{ project.id }}" method="POST">
+                                            <button class="btn btn-danger" type="submit">Decline</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                        </table>
+                    </div>
+                </div>
+                <!-----------------END PENDING ------------------->
+            </div>
+            <div class="tab-pane fade" id="v-pills-confirmed" role="tabpanel" aria-labelledby="v-pills-confirmed-tab"
+                tabindex="0">
+                <!-- ----------------ACCEPTED ----------------->
+                <h2 class="text-dark  mt-5 ms-4">Accepted Projects Table</h2>
+                <div class="mt-5 ms-5">
+                    <div class="col-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Created At</th>
+                                    <th>Project Name</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in all_accepted_projects %}
+                                <tr>
+                                    <td>{{ project.id }}</td>
+                                    <td>{{ project.created_at }}</td>
+                                    <td>{{ project.title }}</td>
+                                    <td>{{ project.status }}</td>
+                                    <td class="d-flex justify-content-center gap-3">
+                                        <!-- <button class="btn btn-primary">View</button> -->
+                                        <a href="/projects/{{project.id}}/show" class="btn btn-primary">View</a>
+                                        <form action="/decline_project/{{ project.id }}" method="POST">
+                                            <button class="btn btn-danger" type="submit">Decline</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- ----------------END ACCEPTED ----------------->
+            </div>
+            <div class="tab-pane fade" id="v-pills-declined" role="tabpanel" aria-labelledby="v-pills-declined-tab"
+                tabindex="0">
+                <!-- --------------- Declined ----------------->
+                <h2 class="text-dark  mt-5 ms-4">Declined Projects Table</h2>
+                <div class="mt-5 ms-5">
+                    <div class="col-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Created At</th>
+                                    <th>Project Name</th>
+                                    <th>Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in all_declined_projects %}
+                                <tr>
+                                    <td>{{ project.id }}</td>
+                                    <td>{{ project.created_at }}</td>
+                                    <td>{{ project.title }}</td>
+                                    <td>{{ project.status }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- ----------------END Declined ----------------->
+            </div>
+            <div class="tab-pane fade" id="v-pills-investors" role="tabpanel" aria-labelledby="v-pills-investors-tab"
+                tabindex="0">
+                <!-- --------------- users ----------------->
+                <h2 class="text-dark  mt-5 ms-4">Investors Table</h2>
+                <div class="mt-5 ms-5">
+                    <div class="col-10">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Investor Name</th>
+                                    <th scope="col">Wallet</th>
+                                    <th scope="col">Investments</th>
+                                    <th scope="col">Invested Funds</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for investor in all_investors %}
+                                <tr>
+                                    <td>{{ investor.id }}</td>
+                                    <td>{{ investor.created_at }}</td>
+                                    <td>{{ investor.first_name }} {{ investor.last_name }}</td>
+                                    <td>{{ investor.wallet }}</td>
+                                    <td>{{ investor.investment_count }}</td>
+                                    <td>{{ investor.investment_amount }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <!-- ----------------END Declined ----------------->
+            </div>
+            <div class="tab-pane fade" id="v-pills-project-owners" role="tabpanel"
+                aria-labelledby="v-pills-requests-tab" tabindex="0">
+                <h2 class="text-dark  mt-5 ms-4">Project Owners Table</h2>
+                <div class=" mt-5 ms-5 me-4">
+                    <div class="col-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Accepted At</th>
+                                    <th scope="col">Project Owner</th>
+                                    <th scope="col">Project Name</th>
+                                    <th scope="col">Progress</th>
+                                    <th scope="col">Invested Funds</th>
+                                    <th scope="col">Owner Funds</th>
+                                    <th scope="col">Goal</th>
+                                    <th scope="col">Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for project in all_pos %}
+                                <tr>
+                                    <td>{{project.id}}</td>
+                                    <td>{{project.created_at}}</td>
+                                    <td>{{ project.acceptance_date}}</td>
+                                    <td>{{ project.po}}</td>
+                                    <td>{{ project.title}}</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{ project.percentage}}%;"
+                                                aria-valuenow="{{ project.percentage}}" aria-valuemin="0"
+                                                aria-valuemax="100">{{ project.percentage}}</div>
+                                        </div>
+                                    </td>
+                                    <td>{{ project.amount_raised}}</td>
+                                    <td>{{ project.capital}}</td>
+                                    <td>{{ project.goal}}</td>
+                                    <td>{{ project.deadline}}</td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-------------------- Footer -------------------------------->
+    <!-- footer -->
+    <footer class="bg-light text-center text-lg-start ">
+        <div class="container p-5">
+            <div class="row d-flex justify-content-lg-between">
+                <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                    <a class="text-decoration-none h5" style="color: #1b668c;" href="#">
+                        <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo"
+                            width="30" height="30" class="d-inline-block align-text-bottom">
+                        Growvest
+                    </a>
+                    <!-- <h5 class="text-uppercase" style="color: #1b668c;">Project X</h5> -->
+                    <p>
+                        Welcome to the Public Benefit Corporation's website. We are a company proud to be a catalyst for
+                        change.
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase" style="color: #1b668c;">links</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="">
+                            <a href="/" class="text-dark" style="font-size: smaller;">Home</a>
+                        </li>
+                        <li>
+                            <a href="/explore" class="text-dark" style="font-size: smaller;">Explore</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Public Benefit Corporation
+    </div>  -->
+    </footer>
+    <!--------------------End Footer -------------------------------->
+
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <script>
+        const xValues = ["Pending", "Declined", "Accepted"];
+        const yValues = [25, 10, 65];
+        const barColors = [
+            "rgb(212, 192, 110)",
+            "rgb(212, 110, 130)",
+            "rgb(110, 212, 177)"
+        ];
+
+        new Chart("myChart", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Projects"
+                }
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

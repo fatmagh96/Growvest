@@ -1,0 +1,79 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+/* navbar */
+#searchInput {
+  border: 1px solid #696565;
+  border-radius: 25px;
+  padding: 5px;
+}
+
+.underline-on-hover:hover {
+  text-decoration: underline;
+}
+
+.nav_background {
+  background-image: linear-gradient(to right, #182756, #37446c);
+  background-color: white;
+  border-bottom: 1px solid black;
+  /* color: #4179b0; */
+}
+
+/* end navbar */
+
+/* Default link styles */
+.container a {
+    text-decoration: none; /* Remove default underline */
+    /* color: #000000; Change link color */
+    font-weight: bold;
+    transition: color 0.3s; /* Add smooth color transition on hover */
+  }
+  
+  /* Apply underline on hover */
+.container a.underline-on-hover1:hover {
+    text-decoration: underline;
+    /* color: #000000; Change link color on hover */
+  }
+
+.underline-on-hover:hover {
+    text-decoration: underline;
+}
+
+.box {
+    /* background-image: linear-gradient(to right, #182756, #37446c); */
+    /* background-color: #1e2a55; */
+    border: 1px solid #182756;
+    color: 143, 207, 149;
+}
+
+.background {
+    background-image: linear-gradient(to right, #182756, #37446c);
+    background-color: white;
+    border-bottom: 1px solid black;
+    /* color: #4179b0; */
+}
+
+.small {
+    font-size: smaller;
+}
+
+.card_update {
+    width: 85%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    /* overflow: hidden; */
+  }
+  
+  .card_update .content {
+    max-height: 100px;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+  }
+  
+  .read-more {
+    color: blue;
+    cursor: pointer;
+  }
+

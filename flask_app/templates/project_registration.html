@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='registration.css') }}">
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <title>Document</title>
+</head>
+
+<body>
+
+
+
+  <!--------------------------- NAVBAR ------------------------->
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg nav_background py-2" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+          height="30" class="d-inline-block align-text-bottom">
+        Growvest
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/explore">Explore</a>
+          </li>
+
+        </ul>
+        <div class="me-5 ">
+          <form class="d-flex">
+            <input type="text" id="searchInput" placeholder="Search..." class="bg-light text-black">
+            <!-- <input class="form-control me-sm-2" type="search" placeholder="Search"> -->
+            <!-- <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+          </form>
+        </div>
+
+        {% if 'id' in session %}
+        <!-- Avatar -->
+        <div class="dropdown">
+          <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
+            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ url_for('static', filename='assets/avatar.png') }}" class="rounded-circle" height="30"
+              alt="Black and White Portrait of a Man" loading="lazy" />
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+            <li>
+              <a class="dropdown-item" href="/dashboard">My profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Settings</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+        <!-- end avatar -->
+
+        {% else %}
+        <div class="d-flex gap-4">
+          <!-- data-bs-toggle="modal" data-bs-target="#SignInModal"  -->
+          <a href="/signin" class="btn text-light underline-on-hover shadow-none">Log in</a>
+          <a href="/register" class="btn text-light underline-on-hover shadow-none">Sign up</a>
+
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </nav>
+  <!-- end navbar -->
+  <!--------------------------- END NAVBAR ------------------------->
+
+
+  <section class=" bg-image"
+    style="background-image: url('../static/assets/investment-background-snj8ylr71lc323ot.jpg'); background-size: cover; background-attachment: fixed; ">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card my-4" style="border-radius: 15px;">
+              <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Create Your Project</h2>
+                <form action="/projects/create" method="post" enctype="multipart/form-data">
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Project Name</label>
+                    {% for message in get_flashed_messages(category_filter=['title']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="text" name="title" id="form3Example1cg" class="form-control form-select-lg" />
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Description</label>
+                    {% for message in get_flashed_messages(category_filter=['description']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <textarea name="description" id="" cols="10" rows="2" class="form-control"></textarea>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Pitch</label>
+                    {% for message in get_flashed_messages(category_filter=['pitch']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <textarea name="pitch" id="" cols="10" rows="2" class="form-control"></textarea>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Project Video (.mp4)</label>
+                    {% for message in get_flashed_messages(category_filter=['video']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                        {% endfor %}
+                    <input type="file" name="video" accept=".mp4" id="form3Example1cg" class="form-control" />
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Project Image (JPG or PNG)</label>
+                    {% for message in get_flashed_messages(category_filter=['image']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="file" name="image" accept=".jpg, .jpeg, .png" id="form3Example1cg" class="form-control"/>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example3cg">Type</label>
+                    {% for message in get_flashed_messages(category_filter=['model']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <select id="form3Example3cg" name="model" class="form-select" aria-label="Type">
+                      <option value="" disabled selected>Select a Type</option>
+                      <option value="b2b">B2B</option>
+                      <option value="b2c">B2C</option>
+                    </select>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example3cg">Category</label>
+                    {% for message in get_flashed_messages(category_filter=['category']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <select id="choices-multiple-remove-button" name="category" placeholder="Select your Category">
+                      <option selected>Select your Category</option>
+                      <option value="technology">Technology</option>
+                      <option value="engineering">Engineering</option>
+                      <option value="business">Business</option>
+                      <option value="healthcare">Healthcare</option>
+                      <option value="education">Education</option>
+                      <option value="art">Art</option>
+                      <option value="social">Social</option>
+                      <option value="research">Research</option>
+                      <option value="design">Design</option>
+                      <option value="travel">Travel</option>
+                      <option value="green-projects">Green Projects</option>
+                      <option value="development">Development</option>
+                      <option value="entertainment">Entertainment</option>
+                    </select>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example4cg">Amount Already Raised</label>
+                    {% for message in get_flashed_messages(category_filter=['capital']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="number" id="form3Example4cg" name="capital" class="form-control" min="0.1"
+                      step="0.1" />
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example4cdg">Funding Goal</label>
+                    {% for message in get_flashed_messages(category_filter=['goal']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="number" id="form3Example4cdg" name="goal" class="form-control" min="0.1" step="0.1" />
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Funding Deadline</label>
+                    {% for message in get_flashed_messages(category_filter=['deadline']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="Date" id="form3Example1cg" name="deadline" class="form-control" />
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Tax Code</label>
+                    {% for message in get_flashed_messages(category_filter=['tax_code']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="text" id="form3Example1cg" name="tax_code" class="form-control" />
+                  </div>
+
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Bank details (RIB)</label>
+                    {% for message in get_flashed_messages(category_filter=['bank_details']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="text" id="form3Example1cg" name="bank_details" class="form-control " />
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form3Example1cg">Upload Business Plan (.pdf)</label>
+                    {% for message in get_flashed_messages(category_filter=['business_plan']) %}
+                            <p class="h6 text-danger">* {{message}}</p>
+                    {% endfor %}
+                    <input type="file" id="form3Example1cg" name="business_plan" accept=".pdf" class="form-control"/>
+                  </div>
+                  <input type="hidden" value="pending" name="status">
+                  <input type="hidden" value="0" name="amount_raised">
+
+
+                  <div class="d-flex justify-content-center mt-5">
+                    <!-- <button type="button" class="btn btn-block btn-lg gradient-custom-4"
+                      style="background-color: #023047; color: white;">Register</button> -->
+                    <input type="submit" value="Register" class="btn btn-block btn-lg gradient-custom-4"
+                    style="background-color: #023047; color: white;">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+   <!-------------------- Footer -------------------------------->
+  <!-- footer -->
+  <footer class="bg-light text-center text-lg-start ">
+    <div class="container p-5">
+      <div class="row d-flex justify-content-lg-between">
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+          <a class="text-decoration-none h5" style="color: #1b668c;" href="#">
+            <img src="{{ url_for('static', filename='assets/logo1-removebg-preview.png') }}" alt="Logo" width="30"
+              height="30" class="d-inline-block align-text-bottom">
+            Growvest
+          </a>
+          <!-- <h5 class="text-uppercase" style="color: #1b668c;">Project X</h5> -->
+          <p>
+            Welcome to the Public Benefit Corporation's website. We are a company proud to be a catalyst for change.
+          </p>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase" style="color: #1b668c;">links</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="">
+              <a href="/" class="text-dark" style="font-size: smaller;">Home</a>
+            </li>
+            <li>
+              <a href="/explore" class="text-dark" style="font-size: smaller;">Explore</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Public Benefit Corporation
+    </div>  -->
+  </footer>
+  <!--------------------End Footer -------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+  <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+
+      var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+        removeItemButton: true,
+        maxItemCount: 1,
+        searchResultLimit: 5,
+        renderChoiceLimit: 5
+      });
+
+
+    });
+  </script>
+
+  <script>
+
+    // ================== script of the prject form =====================
+    const businessOwnerYes = document.getElementById('business-owner-yes');
+    const businessOwnerNo = document.getElementById('business-owner-no');
+    const fieldExperience = document.getElementById('fieldExperience');
+    const yearsExperience = document.getElementById('yearsExperience');
+
+    businessOwnerYes.addEventListener('change', function () {
+      if (this.checked) {
+        fieldExperience.style.display = 'block';
+        yearsExperience.style.display = 'block';
+      } else {
+        fieldExperience.style.display = 'none';
+        yearsExperience.style.display = 'none';
+      }
+    });
+
+    businessOwnerNo.addEventListener('change', function () {
+      if (this.checked) {
+        fieldExperience.style.display = 'none';
+        yearsExperience.style.display = 'none';
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>
